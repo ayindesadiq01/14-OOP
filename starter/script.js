@@ -71,25 +71,30 @@ Car.prototype.break = function() {
 BMW.accelerate();
 BMW.break();
 
-// CHALLENGE 2
-class fordCl {
-  constructor(car, speed) {
-    this.car = car;
+
+class Cars {
+  constructor(maker, speed) {
+    this.maker = maker;
     this.speed = speed;
   }
+  accelerate () {
+    return this.speed += 10
+  }
+  break () {
+    return this.speed -= 5
+  }
 
+  // GETTER
   get speedUS() {
     return this.speed / 1.6;
   }
-
-  set speed(mov) {
-    this.speedUS = mov;
-  }
 }
-const fordCar = new fordCl('Ford', 120)
+const peace = new Cars('Ford', 120);
+console.log(peace.accelerate())
+console.log(peace.break())
+console.log(peace.speedUS)
 
-console.log(fordCar.speedUS)
-// console.log(fordCar.speed = this.speed *)
+
 
 
 
