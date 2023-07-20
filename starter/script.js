@@ -88,11 +88,54 @@ class Cars {
   get speedUS() {
     return this.speed / 1.6;
   }
+  // SETTER
+  set speedUs(speed) {
+    return this.speed * 1.6;
+  }
 }
 const peace = new Cars('Ford', 120);
 console.log(peace.accelerate())
 console.log(peace.break())
-console.log(peace.speedUS)
+console.log(peace.speedUS) 
+// console.log(peace.speedUs(120))
+
+// INHERITANCE IN CLASSES
+const Persons = function(firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+  // console.log(this.birthYear)
+
+}
+Persons.prototype.calcAge = function() {
+  return (2020 - birthYear);
+}
+const john = new Persons('John', 1999)
+// console.log(john.calcAge())
+console.log(john.__proto__ === Persons.prototype)
+
+
+const Students = function(firstName, birthYear, course) {
+  Persons.call(this, firstName, birthYear);
+  this.course = course;
+  console.log(this.birthYear)
+
+}
+// Inorder to inherit the prototype property of the parent Class we use the Object.Create to Link the Parent and Child classes together. The Student.prototype now inherit the prototype of the Persons
+//LINKING PROTOTYPE
+Students.prototype = Object.create(Persons.prototype)
+// Students.prototype = Persons.prototype
+// Students.prototype = Persons.prototype wont work because this terminology it implies that the students.protoype should be exactly equal to the persons. prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
+// The whole idea behind INHERITANCE is the child classes can share behaviour from there parent classes. What we are trying to do here is to mame Persons.prototype the prototype of Students
+
+Students.prototype.studentInfo = function(){
+  console.log(`My name is ${this.firstName} and I studied ${this.course}`)
+}
+
+const paul = new Students ('Paul', 2002, 'finance');
+paul.studentInfo();
+// paul.cAge();
+// console.log(Students.prototype)
+
 
 
 
