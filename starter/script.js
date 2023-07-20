@@ -100,29 +100,25 @@ console.log(peace.speedUS)
 // console.log(peace.speedUs(120))
 
 // INHERITANCE IN CLASSES
-const Persons = function(firstName, birthYear) {
+const Personss = function(firstName, birthYear) {
   this.firstName = firstName;
   this.birthYear = birthYear;
-  // console.log(this.birthYear)
-
 }
-Persons.prototype.calcAge = function() {
-  return (2020 - birthYear);
+Personss.prototype.calcAge = function() {
+  return (2020 - this.birthYear);
 }
-const john = new Persons('John', 1999)
+// const john = new Persons('John', 1999)
 // console.log(john.calcAge())
-console.log(john.__proto__ === Persons.prototype)
+// console.log(john.__proto__ === Persons.prototype)
 
 
 const Students = function(firstName, birthYear, course) {
-  Persons.call(this, firstName, birthYear);
+  Personss.call(this, firstName, birthYear);
   this.course = course;
-  console.log(this.birthYear)
-
 }
 // Inorder to inherit the prototype property of the parent Class we use the Object.Create to Link the Parent and Child classes together. The Student.prototype now inherit the prototype of the Persons
 //LINKING PROTOTYPE
-Students.prototype = Object.create(Persons.prototype)
+Students.prototype = Object.create(Personss.prototype)
 // Students.prototype = Persons.prototype
 // Students.prototype = Persons.prototype wont work because this terminology it implies that the students.protoype should be exactly equal to the persons. prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
 // The whole idea behind INHERITANCE is the child classes can share behaviour from there parent classes. What we are trying to do here is to mame Persons.prototype the prototype of Students
@@ -133,8 +129,7 @@ Students.prototype.studentInfo = function(){
 
 const paul = new Students ('Paul', 2002, 'finance');
 paul.studentInfo();
-// paul.cAge();
-// console.log(Students.prototype)
+paul.calcAge();
 
 
 
@@ -242,4 +237,24 @@ console.log(account.latest)
 account.latest = 50
 console.log(account.movements)
 
-// CHALLENGE
+// INHERITANCE WITH CLASSES
+// Parent Classes
+const School = function(secondary, year) {
+  this.secondary = secondary;
+  this.year = year;
+}
+const afrograms = new School('level two', 1960);
+
+School.prototype.yearDifference = function() {
+  console.log(2023 - this.year);
+}
+afrograms.yearDifference();
+
+// Child Classes
+const DayCare = function(secondary, year, course) {
+  School.call(this, secondary, year);
+  this.course = course;
+}
+DayCare.prototype = Object.create(School.prototype)
+const PrinceDCare = new DayCare('level one', 2000);
+PrinceDCare.yearDifference();
