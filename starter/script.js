@@ -53,51 +53,6 @@ Array.prototype.unique = function() {
 }
 console.log(arr.unique())
 
-// CODE CHALLENGE 1
-// BMW
-const Car = function(make, speed) {
- this.make = make;
- this.speed = speed;
-}
-const BMW = new Car('BMW', 120)
-
-Car.prototype.accelerate = function() {
- console.log(`${this.speed + 10}km/h`)
-}
-Car.prototype.break = function() {
-  console.log(`${this.speed - 5}km/h`)
-
-}
-BMW.accelerate();
-BMW.break();
-
-
-class Cars {
-  constructor(maker, speed) {
-    this.maker = maker;
-    this.speed = speed;
-  }
-  accelerate () {
-    return this.speed += 10
-  }
-  break () {
-    return this.speed -= 5
-  }
-
-  // GETTER
-  get speedUS() {
-    return this.speed / 1.6;
-  }
-  // SETTER
-  set speedUs(speed) {
-    return this.speed * 1.6;
-  }
-}
-const peace = new Cars('Ford', 120);
-console.log(peace.accelerate())
-console.log(peace.break())
-console.log(peace.speedUS) 
-// console.log(peace.speedUs(120))
 
 // INHERITANCE IN CLASSES
 const Personss = function(firstName, birthYear) {
@@ -116,12 +71,9 @@ const Students = function(firstName, birthYear, course) {
   Personss.call(this, firstName, birthYear);
   this.course = course;
 }
-// Inorder to inherit the prototype property of the parent Class we use the Object.Create to Link the Parent and Child classes together. The Student.prototype now inherit the prototype of the Persons
-//LINKING PROTOTYPE
+
 Students.prototype = Object.create(Personss.prototype)
-// Students.prototype = Persons.prototype
-// Students.prototype = Persons.prototype wont work because this terminology it implies that the students.protoype should be exactly equal to the persons. prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
-// The whole idea behind INHERITANCE is the child classes can share behaviour from there parent classes. What we are trying to do here is to mame Persons.prototype the prototype of Students
+
 
 Students.prototype.studentInfo = function(){
   console.log(`My name is ${this.firstName} and I studied ${this.course}`)
@@ -132,25 +84,6 @@ paul.studentInfo();
 paul.calcAge();
 
 
-
-
-
-
-// MERCEDES
-const Merce = function(make, speed) {
- this.make = make;
- this.speed = speed;
-}
-const mercedes = new Merce('Mercedes', 95);
-
-Merce.prototype.accelerate = function(){
-  return `${this.speed + 10}km/h`
-}
-Merce.prototype.brake = function(){
-  return `${this.speed - 5}km/h`
-}
-
-console.log(mercedes.accelerate(), mercedes.brake())
 
 // PRACTICE
 const Player = function(club, birthYear){
@@ -250,11 +183,121 @@ School.prototype.yearDifference = function() {
 }
 afrograms.yearDifference();
 
+
+// Students.prototype = Persons.prototype
+// Students.prototype = Persons.prototype wont work because this terminology it implies that the students.protoype should be exactly equal to the persons. prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
+// The whole idea behind INHERITANCE is the child classes can share behaviour from there parent classes. What we are trying to do here is to mame Persons.prototype the prototype of Students
 // Child Classes
 const DayCare = function(secondary, year, course) {
   School.call(this, secondary, year);
   this.course = course;
 }
+// Inorder to inherit the prototype property of the parent Class we use the Object.Create to Link the Parent and Child classes together. The Student.prototype now inherit the prototype of the Persons
+//LINKING PROTOTYPE
 DayCare.prototype = Object.create(School.prototype)
 const PrinceDCare = new DayCare('level one', 2000);
 PrinceDCare.yearDifference();
+
+// CODING CHALLENGE 
+// Using Constructor Function
+const Car = function(make, speed){
+  this.make = make;
+  this.speed = speed;
+};
+
+Car.prototype.accelerate = function() {
+  this.speed += 20;
+}
+Car.prototype.brake = function() {
+  this.speed -= 5;
+  console.log(`${this.make} is going at ${this.speed}km/h`)
+}
+const BMW = new Car ('BMW', 120);
+// const mercede = new Car('mercedes', 95);
+// Car.prototype.chargeBattery = function(chargeTo) {
+//   this.chargeTo = this.speed+=20
+//   console.log(chargeTo)
+// }
+
+
+// Child Class
+const EV = function(make, speed, charge){
+  Car.call(this, make, speed);
+  this.charge = charge;
+}
+EV.prototype = Object.create(Car.prototype)
+EV.prototype.chargeBattery = function(chargeTo) {
+  this.charge = chargeTo
+}
+EV.prototype.accelerate = function() {
+  this.speed += 20;
+  this.charge --;
+  console.log(`${this.make} going at ${this.speed}km/h, with a charge of ${this.charge}%`)
+}
+const Tesla = new EV('Tesla', 120, 23)
+Tesla.chargeBattery(30);
+Tesla.accelerate()
+Tesla.accelerate()
+Tesla.accelerate()
+
+//USING ES6 CLASSES IN INHERITANCE BETWEEN CLASSES
+class PersonsCL {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(this.birthYear - 2000)
+  }
+}
+const Martin = new PersonsCL("Martin", 2020)
+Martin.calcAge();
+
+// CHILD CLASSES
+class StudentsCl extends PersonsCL {
+  constructor(firstName, birthYear, courses) {
+    super(firstName, birthYear)
+    this.courses = courses;
+  }
+  introduce() {
+    console.log(`My name is ${this.firstName} and I study ${this.courses}`)
+  }
+  calcAge() {
+    console.log(this.birthYear - 1999)
+  }
+}
+const Martins = new StudentsCl('Martins', 2005, 'Computer Science')
+Martins.introduce()
+Martins.calcAge()
+
+//USING object.create() CLASSES IN INHERITANCE BETWEEN CLASSES
+const PersonsObject = {
+  calcAge () {
+    console.log(2027 - this.birthYear)
+  },
+  init(firstName, birthYear) {
+    this.firstName =firstName;
+    this.birthYear = birthYear;
+  }
+}
+const steve = Object.create(PersonsObject);
+steve.init('Steve', 2000)
+steve.calcAge()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
