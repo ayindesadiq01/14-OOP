@@ -276,10 +276,12 @@ const PersonsObject = {
   calcAge () {
     console.log(2027 - this.birthYear)
   },
+
   init(firstName, birthYear) {
     this.firstName =firstName;
     this.birthYear = birthYear;
   }
+  
 }
 const steve = Object.create(PersonsObject);
 steve.init('Steve', 2000)
