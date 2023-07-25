@@ -35,10 +35,10 @@ console.log(jonas)
 console.log(jonas.__proto__);
 console.log(Person.prototype)
 // console.log(jonas.__proto__)
-// console.log(jonas.__proto__ === Person.prototype)8
+// console.log(jonas.__proto__ === Person.prototype)
 // console.log(Person.prototype.isPrototypeOf(Person))
-// console.log(Person.prototype.isPrototypeOf(jonas))
-// console.log(jonas.hasOwnProperty('calcAge'))
+console.log(Person.prototype.isPrototypeOf(jonas))
+console.log(jonas.hasOwnProperty('firstName'))
 
 Person.prototype.skushi = 'Home suschies'
 console.log(jonas.skushi, maltida.skushi);
@@ -160,12 +160,17 @@ const account = {
     return this.movements.slice(-1).pop();
   },
 
+  get alpha() {
+    return this.owner.indexOf('a')
+  },
+
   set latest(mov) {
     this.movements.push(mov);
   },
 
   
 }
+console.log(account.alpha)
 console.log(account.latest)
 account.latest = 50
 console.log(account.movements)
@@ -185,7 +190,7 @@ afrograms.yearDifference();
 
 
 // Students.prototype = Persons.prototype
-// Students.prototype = Persons.prototype wont work because this terminology it implies that the students.protoype should be exactly equal to the persons. prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
+// Students.prototype = Persons.prototype wont work because this terminology implies that the students.protoype should be exactly equal to the persons.prototype. But using an Object.create() to link the two classes together it means that we allowing the child element to inherit the prototype property of the parent element. (Students.prototype = Object.create(Persons.prototype)) will produce an empty object.
 // The whole idea behind INHERITANCE is the child classes can share behaviour from there parent classes. What we are trying to do here is to mame Persons.prototype the prototype of Students
 // Child Classes
 const DayCare = function(secondary, year, course) {
@@ -197,6 +202,39 @@ const DayCare = function(secondary, year, course) {
 DayCare.prototype = Object.create(School.prototype)
 const PrinceDCare = new DayCare('level one', 2000);
 PrinceDCare.yearDifference();
+
+// PRACTICE ON INHERITANC WITH CLASSES USING CONSTRUCTOR FUNCTION
+// Parent Class
+
+const Company = function(CpyName, foundingYr) {
+  this.CpyName = CpyName;
+  this.foundingYr = foundingYr;
+}
+Company.prototype.newYr= function() {
+  console.log(Math.abs(this.foundingYr - 2023));
+}
+// const dangote = new Company('Dangote Plc', 1960)
+// dangote.newYr()
+
+
+// Child Class
+const childCompany = function(CpyName, foundingYr, products) {
+  Company.call(this, CpyName, foundingYr);
+  this.products = products;
+
+}
+
+childCompany.prototype = Object.create(Company.prototype);
+childCompany.prototype.newYr= function() {
+  return 2020 - this.foundingYr
+}
+childCompany.prototype.yearletter = function() {
+  console.log(`We will be celebrate one of the most prestigious compnay, ${this.CpyName}, founded in the year ${this.foundingYr}, and now clocking ${this.newYr()} this year. Will will be opening a new ${this.products} today.`)
+}
+
+const aliko = new childCompany('Dangote', 2000, 'Sugar');
+aliko.yearletter()
+
 
 // CODING CHALLENGE 
 // Using Constructor Function
@@ -241,6 +279,7 @@ Tesla.accelerate()
 Tesla.accelerate()
 
 //USING ES6 CLASSES IN INHERITANCE BETWEEN CLASSES
+//PARENT CLASS
 class PersonsCL {
   constructor(firstName, birthYear) {
     this.firstName = firstName;
@@ -284,9 +323,47 @@ const PersonsObject = {
   
 }
 const steve = Object.create(PersonsObject);
-steve.init('Steve', 2000)
-steve.calcAge()
+// steve.init('Steve', 2000)
+// steve.calcAge()
 
+const studentsProto = Object.create(PersonsObject);
+studentsProto.init = function(firstName, birthYear, courses) {
+  PersonsObject.init.call(this, firstName, birthYear),
+  this.courses = courses;
+};
+studentsProto.introduce = function() {
+    console.log(`My name is ${this.firstName} and I study ${this.courses}`)
+}
+const jay = Object.create(studentsProto);
+jay.init('Jay', 2000, 'Finance')
+jay.introduce()
+jay.calcAge();
+
+
+// MORE CLASSES EXAMPLES
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.pin = pin;
+    this.movements = [];
+    this.locale = navigator.language;
+  }
+
+  // Public interface (API)
+  deposits(val) {
+    this.movements.push(val)
+  }
+  withdrawal(val){
+    // this.deposits(-val)
+    this.movements.push(val)
+  }
+  
+}
+const acc1 = new Account('Jonas', 'EUR', 1111);
+acc1.deposits(100)
+acc1.withdrawal(200)
+console.log(acc1)
 
 
 
